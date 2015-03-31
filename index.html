@@ -7,9 +7,18 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
     <script>
-      // Run queries and display results here
+      var eventName = 'Viewed reports';                            // replace with event name of your choice
+      var $dau = MP.api.segment(eventName, 'mp_country_code', {   // use segment query on eventName, and segment the data by country
+          from: moment().subtract(1, 'months'),                   // 'from' date should be one month ago
+          to: moment(),                                           // 'to' date should be today
+          unit: 'day',                                            // we want a count of button clicks for each day of the month
+          type: 'unique'                                          // daily counts should be unique; multiple clicks by the same person in one day should be counted only once
+      });
+      
+      $dau.done(function(results) {
+        console.log(results.values());
+      });
     </script>
   </body>
 </html>
